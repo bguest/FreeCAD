@@ -272,6 +272,7 @@ protected:
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
     void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
+    void drawOrdinate(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawRadius(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawDiameter(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
     void drawAngle(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
@@ -302,6 +303,9 @@ private:
     static double toDeg(double angle);
     static double toQtRad(double angle);
     static double toQtDeg(double angle);
+
+    bool isHorizontal(const Base::Vector2d &a, const Base::Vector2d &b) const;
+    bool isVertical(const Base::Vector2d &a, const Base::Vector2d &b) const;
 
     double getDefaultExtensionLineOverhang() const;
     double getDefaultArrowTailLength() const;
