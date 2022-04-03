@@ -942,6 +942,9 @@ void QGIViewDimension::draw()
             || strcmp(dimType, "DistanceY") == 0) {
             drawDistance(dim, vp);
         }
+        else if (strcmp(dimType, "OrdinateX") == 0 || strcmp(dimType, "OrdinateY") == 0) {
+            drawDistance(dim, vp);
+        }
         else if (strcmp(dimType, "Diameter") == 0) {
             drawDiameter(dim, vp);
         }
@@ -2353,13 +2356,12 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
         fromQtGui(mapRectFromItem(datumLabel, datumLabel->boundingRect())));
 
     pointPair linePoints = dimension->getLinearPoints();
-    const char* dimensionType = dimension->Type.getValueAsString();
 
     double lineAngle;
-    if (strcmp(dimensionType, "DistanceX") == 0) {
+    if (dimension->Type.isOneOf({"DistanceX", "OrdinateX"})){
         lineAngle = 0.0;
     }
-    else if (strcmp(dimensionType, "DistanceY") == 0) {
+    else if (dimension->Type.isOneOf({"DistanceY", "OrdinateY"})) {
         lineAngle = M_PI_2;
     }
     else {

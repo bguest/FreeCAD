@@ -209,6 +209,9 @@ public:
     /// checks if the property is set to a certain string value
     bool isValue(const char* value) const;
 
+    // checks if the property is set to one of the values in the vector
+    bool isOneOf(const std::vector<const char*>& values) const;
+
     /// checks if a string is included in the enumeration
     bool isPartOf(const char* value) const;
 

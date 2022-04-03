@@ -1476,6 +1476,9 @@ public:
         addCommand("TechDraw_ExtensionCreateVertCoordDimension");
         addCommand("TechDraw_ExtensionCreateObliqueCoordDimension");
         addCommand(); //separator
+        addCommand("TechDraw_ExtensionCreateHorizOrdinateDimension");
+        addCommand("TechDraw_ExtensionCreateVertOrdinateDimension");
+        addCommand(); //separator
         addCommand("TechDraw_ExtensionCreateHorizChamferDimension");
         addCommand("TechDraw_ExtensionCreateVertChamferDimension");
     }
