@@ -154,6 +154,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *tooldimensions << "TechDraw_ExtensionCreateHorizChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateVertChamferDimension";
     *tooldimensions << "TechDraw_ExtensionCreateLengthArc";
+    *tooldimensions << "TechDraw_ExtensionCreateHorizOrdinateDimension";
+    *tooldimensions << "TechDraw_ExtensionCreateVertOrdinateDimension";
     *tooldimensions << "Separator";
     *tooldimensions << "TechDraw_ExtensionInsertDiameter";
     *tooldimensions << "TechDraw_ExtensionInsertSquare";
@@ -371,6 +373,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     }
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
+    // *extdimensions << "TechDraw_ExtensionCreateOrdinateDimensionGroup";
 
     Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
@@ -471,6 +474,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *extdimensions << "TechDraw_ExtensionCreateLengthArc";
     *extdimensions << "TechDraw_ExtensionInsertPrefixGroup";
     *extdimensions << "TechDraw_ExtensionIncreaseDecreaseGroup";
+    // *extdimensions << "TechDraw_ExtensionCreateOrdinateDimensionGroup";
 
     Gui::ToolBarItem* file = new Gui::ToolBarItem(root);
     file->setCommand("TechDraw File Access");
