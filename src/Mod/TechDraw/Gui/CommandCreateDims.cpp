@@ -1401,6 +1401,43 @@ protected:
     void createOrdinateDimension(const std::string& type)
     {
         specialDimension = SpecialDimension::OrdinateDistance;
+        
+        // Check if a zero ordinate dimension already exists at this point
+        bool hasZeroDimension = false;
+        if (partFeat) {
+            TechDraw::DrawPage* page = partFeat->findParentPage();
+            if (page) {
+                std::vector<App::DocumentObject*> views = page->Views.getValues();
+                for (auto* view : views) {
+                    auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(view);
+                    if (dim && dim->Type.isValue(type)) {
+                        // Check if this dimension is a zero dimension at the same point
+                        TechDraw::pointPair pp = dim->getLinearPoints();
+                        Base::Vector3d firstPoint = selPoints[0].second();
+                        if (std::abs(pp.first().x - firstPoint.x) < 1e-6 &&
+                            std::abs(pp.first().y - firstPoint.y) < 1e-6 &&
+                            std::abs(pp.second().x - firstPoint.x) < 1e-6 &&
+                            std::abs(pp.second().y - firstPoint.y) < 1e-6) {
+                            hasZeroDimension = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Create zero dimension if it doesn't exist
+        if (!hasZeroDimension) {
+            DrawViewDimension* zeroDim = dimMaker(partFeat, type, { selPoints[0], selPoints[0] }, {});
+            dims.push_back(zeroDim);
+            // Position zero dimension text at the origin point
+            Base::Vector3d firstPoint = selPoints[0].second();
+            zeroDim->X.setValue(firstPoint.x);
+            double fontSize = Preferences::dimFontSizeMM();
+            zeroDim->Y.setValue(-firstPoint.y + 0.5 * fontSize);
+        }
+        
+        // Create dimensions from origin to other points
         for (size_t i = 0; i < selPoints.size() - 1; ++i) {
                 DrawViewDimension* dim = dimMaker(partFeat, type, { selPoints[0], selPoints[i + 1] }, {});
             dims.push_back(dim);

@@ -450,6 +450,37 @@ void execCreateHorizOrdinateDimension(Gui::Command* cmd) {
         if (std::signbit(yMaster)){
             dimDistance = -dimDistance;
         }
+        
+        // Check if a zero ordinate dimension already exists at this point
+        bool hasZeroDimension = false;
+        TechDraw::DrawPage* page = objFeat->findParentPage();
+        if (page) {
+            std::vector<App::DocumentObject*> views = page->Views.getValues();
+            for (auto* view : views) {
+                auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(view);
+                if (dim && dim->Type.isValue("OrdinateX")) {
+                    // Check if this dimension is a zero dimension at the same point
+                    TechDraw::pointPair pp = dim->getLinearPoints();
+                    if (std::abs(pp.first().x - allVertexes[0].point.x) < 1e-6 &&
+                        std::abs(pp.first().y - allVertexes[0].point.y) < 1e-6 &&
+                        std::abs(pp.second().x - allVertexes[0].point.x) < 1e-6 &&
+                        std::abs(pp.second().y - allVertexes[0].point.y) < 1e-6) {
+                        hasZeroDimension = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Create zero dimension if it doesn't exist
+        if (!hasZeroDimension) {
+            TechDraw::DrawViewDimension* zeroDim =
+                _createLinDimension(objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateX");
+            zeroDim->X.setValue(allVertexes[0].point.x);
+            zeroDim->Y.setValue(-yMaster);
+        }
+        
+        // Create dimensions from origin to other points
         for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
             TechDraw::DrawViewDimension* dim =
                 _createLinDimension(objFeat, allVertexes[0].name, allVertexes[n + 1].name, "OrdinateX");
@@ -505,7 +536,7 @@ void execCreateVertOrdinateDimension(Gui::Command* cmd) {
         return;
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Horiz Ordinate Dim"));
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Vert Ordinate Dim"));
     const std::vector<std::string> subNames = selection[0].getSubNames();
     std::vector<dimVertex> allVertexes;
     allVertexes = _getVertexInfo(objFeat, subNames);
@@ -515,6 +546,37 @@ void execCreateVertOrdinateDimension(Gui::Command* cmd) {
         if (std::signbit(xMaster)){
             dimDistance = -dimDistance;
         }
+        
+        // Check if a zero ordinate dimension already exists at this point
+        bool hasZeroDimension = false;
+        TechDraw::DrawPage* page = objFeat->findParentPage();
+        if (page) {
+            std::vector<App::DocumentObject*> views = page->Views.getValues();
+            for (auto* view : views) {
+                auto* dim = dynamic_cast<TechDraw::DrawViewDimension*>(view);
+                if (dim && dim->Type.isValue("OrdinateY")) {
+                    // Check if this dimension is a zero dimension at the same point
+                    TechDraw::pointPair pp = dim->getLinearPoints();
+                    if (std::abs(pp.first().x - allVertexes[0].point.x) < 1e-6 &&
+                        std::abs(pp.first().y - allVertexes[0].point.y) < 1e-6 &&
+                        std::abs(pp.second().x - allVertexes[0].point.x) < 1e-6 &&
+                        std::abs(pp.second().y - allVertexes[0].point.y) < 1e-6) {
+                        hasZeroDimension = true;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        // Create zero dimension if it doesn't exist
+        if (!hasZeroDimension) {
+            TechDraw::DrawViewDimension* zeroDim =
+                _createLinDimension(objFeat, allVertexes[0].name, allVertexes[0].name, "OrdinateY");
+            zeroDim->X.setValue(xMaster);
+            zeroDim->Y.setValue(-allVertexes[0].point.y);
+        }
+        
+        // Create dimensions from origin to other points
         for (long unsigned int n = 0; n < allVertexes.size() - 1; n++) {
             TechDraw::DrawViewDimension* dim =
                 _createLinDimension(objFeat, allVertexes[0].name, allVertexes[n + 1].name, "OrdinateY");
