@@ -345,6 +345,17 @@ bool PropertyEnumeration::isPartOf(const char* value) const
     return _enum.contains(value);
 }
 
+bool PropertyEnumeration::isOneOf(const std::vector<const char*>& values) const
+{
+    for (const auto& value : values) {
+        if (_enum.isValue(value)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 const char* PropertyEnumeration::getValueAsString() const
 {
     if (!_enum.isValid()) {

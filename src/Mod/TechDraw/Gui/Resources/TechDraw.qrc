@@ -164,6 +164,8 @@
         <file>icons/TechDraw_TreeSpreadsheet.svg</file>
         <file>icons/TechDraw_TreeSymbol.svg</file>
         <file>icons/TechDraw_TreeView.svg</file>
+        <file>icons/TechDraw_ExtensionCreateHorizOrdinateDimension.svg</file>
+        <file>icons/TechDraw_ExtensionCreateVertOrdinateDimension.svg</file>
         <file>icons/TechDraw_VerticalDimension.svg</file>
         <file>icons/TechDraw_VerticalExtentDimension.svg</file>
         <file>icons/TechDraw_RefError.svg</file>
